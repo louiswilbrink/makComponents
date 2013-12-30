@@ -2,9 +2,15 @@
 
 angular.module('radialMenuApp')
   .controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
+
+    $scope.data = [
+      {
+        label: 'Sink',
+        value: 1
+      },
+      {
+        label: 'Attach',
+        value: 2
+      }
     ];
   });
