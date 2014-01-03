@@ -2,7 +2,7 @@
 
 angular.module('radialMenuApp')
   .controller('MainCtrl', function ($scope) {
-
+  
     $scope.data = [
       {
         label: 'Sink',

@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('radialMenuApp')
-  .directive('pieMenu', function ($timeout) {
+  .directive('pieMenu1', function ($timeout) {
     return {
-      templateUrl: 'views/pieMenu.html',
+      templateUrl: 'views/pieMenu1.html',
       restrict: 'E',
       scope: {
         pieData: '='
@@ -20,7 +20,7 @@ angular.module('radialMenuApp')
         var outerRadius = w / 2;
         var innerRadius = 0;
 
-        var svg = d3.select('pie-menu')
+        var svg = d3.select('pie-menu1')
           .append('svg')
             .attr('width', w)
             .attr('height', h);
@@ -55,7 +55,7 @@ angular.module('radialMenuApp')
 
         $timeout(function () {
 
-          var dataset2 = [5, 5, 5, 6, 6];
+          var dataset2 = [6, 6, 6, 6, 6, 6, 6];
 
           var arcs = svg.selectAll('g.arc')
               .data(pie(dataset2))
@@ -82,5 +82,5 @@ angular.module('radialMenuApp')
             });
         }, 1000);
       }
-    };
+    }
   });
