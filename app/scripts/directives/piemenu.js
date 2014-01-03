@@ -18,7 +18,7 @@ angular.module('radialMenuApp')
         var h=300;
 
         var outerRadius = w / 2;
-        var innerRadius = 0;
+        var innerRadius = 50;
 
         var svg = d3.select('pie-menu')
           .append('svg')
@@ -27,60 +27,35 @@ angular.module('radialMenuApp')
 
         var arc = d3.svg.arc()
           .innerRadius(innerRadius)
-          .outerRadius(outerRadius);
+          .outerRadius(outerRadius)
+          .startAngle(0)
+          .endAngle(0);
 
-        var arcs = svg.selectAll('g.arc')
+        var arcs = svg.selectAll("g.arc")
             .data(pie(dataset))
-            .enter()
-          .append('g')
-            .attr('class', 'arc')
-            .attr('transform', 'translate(' + outerRadius + ',' + outerRadius + ')');
+          .enter()
+          .append("g")
+            .attr("class", "arc")
+            .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
 
-        //Draw arc paths
-        arcs.append('path')
-          .transition()
-          .attr('fill', function(d, i) { // d = value, i = key
-            return color(i);
-          })
-          .attr('d', arc);
-
-        arcs.append('text')
-          .transition()
-          .attr('transform', function(d) {
-            return 'translate(' + arc.centroid(d) + ')';
-          })
-          .attr('text-anchor', 'middle') .text(function(d) {
-            return d.value;
-          });
-
-        $timeout(function () {
-
-          var dataset2 = [5, 5, 5, 6, 6];
-
-          var arcs = svg.selectAll('g.arc')
-              .data(pie(dataset2))
-              .enter()
-            .append('g')
-              .attr('class', 'arc')
-              .attr('transform', 'translate(' + outerRadius + ',' + outerRadius + ')');
-
-          //Draw arc paths
-          arcs.append('path')
-            .transition()
-            .attr('fill', function(d, i) { // d = value, i = key
-              return color(i);
+        arcs.append("path")
+            .attr("fill", function(d, i) {
+                return color(i);
             })
-            .attr('d', arc);
+            .attr("d", arc);
 
-          arcs.append('text')
+        var expandRadialMenu = function () {
+          arc = d3.svg.arc()
+              .innerRadius(innerRadius)
+              .outerRadius(outerRadius);
+              
+          arcs.selectAll("path")
             .transition()
-            .attr('transform', function(d) {
-              return 'translate(' + arc.centroid(d) + ')';
-            })
-            .attr('text-anchor', 'middle') .text(function(d) {
-              return d.value;
-            });
-        }, 1000);
+            .duration(1000)
+            .attr("d", arc)
+        };
+
+        expandRadialMenu();
       }
     };
   });
