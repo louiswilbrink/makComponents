@@ -10,52 +10,67 @@ angular.module('radialMenuApp')
       },
       link: function postLink() {
 
-        var color = d3.scale.category10();
-        var dataset=[5,5,5];
-        var pie = d3.layout.pie();
-
-        var w=300;
-        var h=300;
-
-        var outerRadius = w / 2;
-        var innerRadius = 50;
+        var color = d3.scale.category10(),
+            dataset=[5,5,5],
+            w=300,
+            h=300,
+            outerRadius = w / 2,
+            innerRadius = 50;
 
         var svg = d3.select('pie-menu')
+            .data(dataset)
           .append('svg')
             .attr('width', w)
             .attr('height', h);
+  
+        var pie = d3.layout.pie();
 
-        var arc = d3.svg.arc()
-          .innerRadius(innerRadius)
-          .outerRadius(outerRadius)
-          .startAngle(0)
-          .endAngle(0);
+        var arc = d3.svg.arc();
 
         var arcs = svg.selectAll("g.arc")
             .data(pie(dataset))
-          .enter()
-          .append("g")
-            .attr("class", "arc")
             .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
 
-        arcs.append("path")
-            .attr("fill", function(d, i) {
-                return color(i);
+        var paths = svg.selectAll("path.path")
+            .data(pie(dataset));
+
+        var texts = svg.selectAll("text.text")
+            .data(pie(dataset))
+            .style("opacity", 0)
+            .attr("transform", function (d) {
+
+                d.innerRadius = 0;
+                d.outerRadius = r;
+                return "translate(" + arc.centroid(d) + ")";
+
             })
-            .attr("d", arc);
+            .attr("text-anchor", "middle")
+            .text(function (d) {
+                return d;
+            });
 
-        var expandRadialMenu = function () {
-          arc = d3.svg.arc()
-              .innerRadius(innerRadius)
-              .outerRadius(outerRadius);
-              
-          arcs.selectAll("path")
-            .transition()
-            .duration(1000)
+        paths.transition()
+            .ease("exp-out")
+            .duration(500)
             .attr("d", arc)
-        };
+            .each("end", open)
+            .attrTween("d", tweenPie);
 
-        expandRadialMenu();
+        function tweenPie(b) {
+            b.outerRadius = r;
+            b.innerRadius = innerRadius;
+            var i = d3.interpolate({startAngle: 0, endAngle: 0, outerRadius: 0, innerRadius: 0}, b);
+            return function(t) {
+                return arc(i(t));
+            };
+        }
+
+        function open(){
+            texts.transition()
+                .ease("exp-out")
+                .duration(200)
+                .style("opacity", 1);
+        }
       }
     };
   });
