@@ -3,12 +3,12 @@
 angular.module('radialMenuApp')
   .directive('pieMenuTwo', function () {
     return {
-      templateUrl: 'views/pieMenu.html',
+      templateUrl: 'views/piemenutwo.html',
       restrict: 'E',
       scope: {
         pieData: '='
       },
-      link: function postLink() {
+      controller: function ($scope) {
 
         var color = d3.scale.category10();
         var dataset=[5,5,5];
@@ -44,7 +44,7 @@ angular.module('radialMenuApp')
             })
             .attr("d", arc);
 
-        var expandRadialMenu = function () {
+        $scope.expandRadialMenu = function () {
           arc = d3.svg.arc()
               .innerRadius(innerRadius)
               .outerRadius(outerRadius);
@@ -52,10 +52,7 @@ angular.module('radialMenuApp')
           paths.transition()
             .duration(1000)
             .attr("d", arc)
-
         };
-
-        expandRadialMenu();
       }
     };
   });

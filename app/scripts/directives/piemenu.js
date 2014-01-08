@@ -49,28 +49,30 @@ angular.module('radialMenuApp')
                 return d;
             });
 
+        var tweenPie = function (b) {
+            b.outerRadius = r;
+            b.innerRadius = innerRadius;
+            var i = d3.interpolate({startAngle: 0, endAngle: 0, outerRadius: 0, innerRadius: 0}, b);
+            return function(t) {
+                var intermediary = i(t);
+                var intermediaryArc = arc(intermediary);
+                return intermediaryArc;
+            };
+        }
+
+        var open = function () {
+            texts.transition()
+                .ease("exp-out")
+                .duration(200)
+                .style("opacity", 1);
+        }
+
         paths.transition()
             .ease("exp-out")
             .duration(500)
             .attr("d", arc)
             .each("end", open)
             .attrTween("d", tweenPie);
-
-        function tweenPie(b) {
-            b.outerRadius = r;
-            b.innerRadius = innerRadius;
-            var i = d3.interpolate({startAngle: 0, endAngle: 0, outerRadius: 0, innerRadius: 0}, b);
-            return function(t) {
-                return arc(i(t));
-            };
-        }
-
-        function open(){
-            texts.transition()
-                .ease("exp-out")
-                .duration(200)
-                .style("opacity", 1);
-        }
       }
     };
   });
