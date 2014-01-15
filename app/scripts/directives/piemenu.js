@@ -31,7 +31,7 @@ angular.module('radialMenuApp')
             .data(pie(dataset))
             .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
 
-        var paths = svg.selectAll("path.path")
+        var paths = arcs.selectAll("path.path")
             .data(pie(dataset));
 
         var texts = svg.selectAll("text.text")
@@ -53,6 +53,7 @@ angular.module('radialMenuApp')
             b.outerRadius = r;
             b.innerRadius = innerRadius;
             var i = d3.interpolate({startAngle: 0, endAngle: 0, outerRadius: 0, innerRadius: 0}, b);
+            console.log(i);
             return function(t) {
                 var intermediary = i(t);
                 var intermediaryArc = arc(intermediary);
