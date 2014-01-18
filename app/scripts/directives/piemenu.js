@@ -18,15 +18,26 @@ angular.module('radialMenuApp')
             innerRadius = 50;
 
         var svg = d3.select('pie-menu')
-            .data(dataset)
           .append('svg')
             .attr('width', w)
             .attr('height', h);
-  
-        var pie = d3.layout.pie();
 
-        var arc = d3.svg.arc();
+        var arc = d3.svg.arc()
+          .innerRadius(0)
+          .outerRadius(100)
+          .startAngle(0)
+          .endAngle(3.14);
 
+        var group = svg.selectAll("g.arc")
+            .append('g')
+              .attr('class', 'arc');
+
+        var path = group.selectAll("path.path")
+            .append('path')
+              .attr('class', 'path')
+              .attr('d', arc);
+
+        /*
         var arcs = svg.selectAll("g.arc")
             .data(pie(dataset))
             .attr("transform", "translate(" + outerRadius + "," + outerRadius + ")");
@@ -74,6 +85,7 @@ angular.module('radialMenuApp')
             .attr("d", arc)
             .each("end", open)
             .attrTween("d", tweenPie);
+        */
       }
     };
   });

@@ -77,3 +77,19 @@ body {
     border-bottom: 0;
   }
 }
+
+/* Beginning cusom CSS */
+
+.h2-fondamento {
+  font-size: 32px;
+  font-family: 'Fondamento', cursive;
+}
+
+.bar {
+  display: inline-block;
+  width: 30px;
+  height: 75px;
+  background-color: teal;
+  border: 1px solid orange;
+}
+

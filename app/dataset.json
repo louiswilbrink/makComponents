@@ -1,0 +1,28 @@
+{
+  "entities" : [
+    {
+      "entityName": "Jet",
+      "ammunitionAmount": 50
+    },
+    {
+      "entityName": "Tank",
+      "ammunitionAmount": 75
+    },
+    {
+      "entityName": "Civ",
+      "ammunitionAmount": 25
+    },
+    {
+      "entityName": "ContainerShip",
+      "ammunitionAmount": 15
+    },
+    {
+      "entityName": "Car",
+      "ammunitionAmount": 9
+    },
+    {
+      "entityName": "DDG",
+      "ammunitionAmount": 110
+    }
+  ]
+}
