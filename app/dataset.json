@@ -14,7 +14,7 @@
     },
     {
       "entityName": "ContainerShip",
-      "ammunitionAmount": 15
+      "ammunitionAmount": 45
     },
     {
       "entityName": "Car",

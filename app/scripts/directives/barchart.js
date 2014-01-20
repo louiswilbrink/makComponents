@@ -25,7 +25,6 @@ angular.module('radialMenuApp')
               .attr('width', rectsWidth)
               .attr('height', rectsHeight)
               .style("border", "1px solid black")
-    
 
           var rects = svgRects.selectAll('rect')
             .data(dataset.entities)
@@ -44,6 +43,21 @@ angular.module('radialMenuApp')
               .attr('fill', function (d, i) {
                 return color(i);
               })
+
+          var texts = svgRects.selectAll('text')
+            .data(dataset.entities)
+            .enter()
+            .append('text')
+              .text(function (d) {
+                return d.entityName;
+              })
+              .attr('x', function (d, i) {
+                return i * (rectsWidth / dataset.entities.length) + (rectsWidth / (dataset.entities.length * 2));
+              })
+              .attr('y', function (d) {
+                return rectsHeight - (d.ammunitionAmount * barChartScale) - 4;
+              })
+              .attr('text-anchor', 'middle')
 
           // Circles
           
