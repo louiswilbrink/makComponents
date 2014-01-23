@@ -1,0 +1,11 @@
+<div class="scales jumbotron">
+  <h1>Scales</h1>
+  <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!</a></p>
+  <div class="sandbox">
+    <h2 class="h2-fondamento">Domain (100 to 500)</h2>
+    <h2 class="h2-fondamento">Range (10 to 350)</h2>
+    <div ng-repeat="scaledOutput in scales.scaledOutputs">
+      <p>{{ scaledOutput[0] }} scales to {{ scaledOutput[1] }}</p>
+    </div>
+  </div>
+</div>
