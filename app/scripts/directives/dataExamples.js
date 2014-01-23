@@ -3,7 +3,7 @@
 angular.module('radialMenuApp')
   .directive('someDataExamples', function () {
     return {
-      templateUrl: 'views/dataExamples.html',
+      templateUrl: 'views/dataexamples.html',
       restrict: 'E',
       link: function postLink(scope, element, attrs) {
 

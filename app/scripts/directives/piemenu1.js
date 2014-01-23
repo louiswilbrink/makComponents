@@ -3,7 +3,7 @@
 angular.module('radialMenuApp')
   .directive('pieMenu1', function ($timeout) {
     return {
-      templateUrl: 'views/pieMenu1.html',
+      templateUrl: 'views/piemenu1.html',
       restrict: 'E',
       scope: {
         pieData: '='
