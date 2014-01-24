@@ -15,6 +15,20 @@ angular.module('radialMenuApp')
 
         // Methods.
         
+        var generateRandomDataset = function () {
+          var dataset = [];
+          var numDataPoints = 50;
+          var xRange = Math.random() * 1000;
+          var yRange = Math.random() * 1000;
+          for (var i = 0; i < numDataPoints; i++) {
+              var newNumber1 = Math.floor(Math.random() * xRange);
+              var newNumber2 = Math.floor(Math.random() * yRange);
+              dataset.push([newNumber1, newNumber2]);
+            }
+
+          return dataset;
+        };
+
         var generateScales = function (dataset, width, height, padding) {
 
           var scales = {};
@@ -50,13 +64,15 @@ angular.module('radialMenuApp')
           
           var width = 500,
               height = 300,
-              padding = 20;
+              padding = 30;
 
           var dataset = [
             [5, 20], [480, 90], [250, 50], [100, 33], [330, 95],
             [410, 12], [475, 44], [25, 67], [85, 21], [220, 88],
             [600, 150]
           ];
+
+          dataset = generateRandomDataset();
 
           // Generate scale for x axis, y axis, and radius.
           var scales = generateScales(dataset, width, height, padding);
@@ -68,6 +84,12 @@ angular.module('radialMenuApp')
           var xAxis = d3.svg.axis()
             .scale(scales.x)
             .orient('bottom')
+            .ticks(5)
+
+          var yAxis = d3.svg.axis()
+            .scale(scales.y)
+            .orient('left')
+            .ticks(5)
 
           // Create SVG element.
           var svg = d3.select('.axes')
@@ -115,9 +137,30 @@ angular.module('radialMenuApp')
               })
                 .attr({
                   'font-family': 'Fondamento',
-                  'font-size': '15px',
-                  'fill': 'red'
+                  'font-size': '10px',
+                  'fill': 'black'
                 })
+
+            // Draw x axis.
+            svg.append('g')
+              .attr('class', 'axis')
+              .attr('transform', 'translate(0,' + (height - padding) + ')')
+              .attr({
+                'font-family': 'Fondamento',
+                'font-size' : '10px',
+                'fill': 'orange'
+              })
+              .call(xAxis);
+
+            svg.append('g')
+              .attr('class', 'axis')
+              .attr('transform', 'translate(' + padding + ', 0)')
+              .attr({
+                'font-family': 'Fondamento',
+                'font-size' : '10px',
+                'fill': 'blue'
+              })
+              .call(yAxis)
         };
 
         // Initialization.
