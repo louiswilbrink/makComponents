@@ -5,7 +5,7 @@ angular.module('radialMenuApp')
     return {
       templateUrl: 'views/axes.html',
       restrict: 'E',
-      controller: ['$scope', function ($scope) {
+      controller: ['$scope', 'Util', function ($scope, Util) {
 
         // Model.
         
@@ -15,20 +15,6 @@ angular.module('radialMenuApp')
 
         // Methods.
         
-        var generateRandomDataset = function () {
-          var dataset = [];
-          var numDataPoints = 50;
-          var xRange = Math.random() * 1000;
-          var yRange = Math.random() * 1000;
-          for (var i = 0; i < numDataPoints; i++) {
-              var newNumber1 = Math.floor(Math.random() * xRange);
-              var newNumber2 = Math.floor(Math.random() * yRange);
-              dataset.push([newNumber1, newNumber2]);
-            }
-
-          return dataset;
-        };
-
         var generateScales = function (dataset, width, height, padding) {
 
           var scales = {};
@@ -72,7 +58,7 @@ angular.module('radialMenuApp')
             [600, 150]
           ];
 
-          dataset = generateRandomDataset();
+          var dataset = Util.getArrayOfRandomPairs();
 
           // Generate scale for x axis, y axis, and radius.
           var scales = generateScales(dataset, width, height, padding);
