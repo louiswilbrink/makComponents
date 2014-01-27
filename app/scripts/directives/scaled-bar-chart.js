@@ -30,7 +30,7 @@ angular.module('radialMenuApp')
           // Create an *inverted* linear scale for the y axis.
           scales.y = d3.scale.linear()
             // Input domain defined as zero to dataset maximum.
-            .domain([ min, max])
+            .domain([ min, d3.max(dataset)])
             // Output range is the height of the svg, minus padding.
             .range([ padding, height - padding])
 
@@ -101,10 +101,17 @@ angular.module('radialMenuApp')
 
           dataset = Util.getArrayOfRandomNumbers(length, min, max);
 
+          // Reset the domain input: The highest number in the dataset
+          // should reach the top of the chart.
+          scales.y.domain([ min, d3.max(dataset)]);
+
           rects = svg.selectAll('rect')
             .data(dataset)
             .transition()
-            .duration(1000)
+            .delay(function (d, i) {
+              return i / dataset.length * 1000;
+            })
+            .duration(500)
             // Set new height and y position.
             .attr('y', function (d) {
               return height - scales.y(d);
@@ -116,7 +123,10 @@ angular.module('radialMenuApp')
           labels = svg.selectAll('text')
             .data(dataset)
             .transition()
-            .duration(1000)
+            .delay(function (d, i) {
+              return i / dataset.length * 1000;
+            })
+            .duration(500)
             .text(function (d) {
               return d;
             })
