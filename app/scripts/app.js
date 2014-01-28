@@ -10,10 +10,13 @@ angular.module('radialMenuApp', [
         controller: 'MainCtrl'
       })
       .when('/axes', {
-        templateUrl: 'views/axes-page.html',
+        templateUrl: 'views/axes-page.html'
       })
       .when('/scaled-bar-chart', {
-        templateUrl: 'views/scaled-bar-chart-page.html',
+        templateUrl: 'views/scaled-bar-chart-page.html'
+      })
+      .when('/radial-menu', {
+        templateUrl: 'views/radial-menu-page.html'
       })
       .otherwise({
         redirectTo: '/'
