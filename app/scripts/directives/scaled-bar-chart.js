@@ -113,12 +113,12 @@ angular.module('radialMenuApp')
             })
             .duration(500)
             // Set new height and y position.
-            .attr('y', function (d) {
-              return height - scales.y(d);
-            })
-            .attr('height', function (d) {
-              return scales.y(d);
-            })
+              .attr('y', function (d) {
+                return height - scales.y(d);
+              })
+              .attr('height', function (d) {
+                return scales.y(d);
+              })
 
           labels = svg.selectAll('text')
             .data(dataset)
@@ -127,12 +127,12 @@ angular.module('radialMenuApp')
               return i / dataset.length * 1000;
             })
             .duration(500)
-            .text(function (d) {
-              return d;
-            })
-            .attr('y', function (d) {
-              return height - scales.y(d) + 10;
-            })
+              .text(function (d) {
+                return d;
+              })
+              .attr('y', function (d) {
+                return height - scales.y(d) + 10;
+              })
         };
       }]
     };

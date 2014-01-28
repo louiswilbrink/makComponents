@@ -133,6 +133,8 @@ angular.module('radialMenuApp')
        
         simpleScale();
         drawScatterPlot();
+
+        // API.
         
       }
     };

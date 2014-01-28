@@ -24,7 +24,7 @@ angular.module('radialMenuApp')
 
       getArrayOfRandomPairs : function () {
 
-        // 50 Pairs randing from [0, 0] to [1000, 1000]
+        // 50 Pairs ranging from [0, 0] to [1000, 1000]
 
         var dataset = [];
         var numDataPoints = 50;
