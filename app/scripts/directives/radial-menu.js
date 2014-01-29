@@ -3,25 +3,32 @@
 angular.module('radialMenuApp')
   .directive('radialMenu', function () {
     return {
+      scope: {
+        radialOptions: '='
+      },
       templateUrl: 'views/radial-menu.html',
       restrict: 'E',
       controller: ['$scope', 'Util', function ($scope, Util) {
 
         // Model.
         
-        var svg, arc, innerRadius, outerRadius, group, path, background, 
+        var svg, arcs, arc, innerRadius, outerRadius, group, path, background, 
             section1, section2, section3, section4,
             width, height, tau;
         
+        var color = d3.scale.category10();
+        var isMenuOpen = false;
+
         // Methods.
         
-        var initializeArc = function () {
+        var initializeArcs = function () {
 
           width = 500;
           height = 500;
           tau = 2 * Math.PI;
           innerRadius = 40;
           outerRadius = 240;
+          arcs = [];
 
           svg = d3.select('.radial-menu')
             .select('.sandbox')
@@ -49,25 +56,13 @@ angular.module('radialMenuApp')
               .style('fill', '#ddd')
               .attr('d', arc);
 
-          section1 = group.append('path')
-              .datum({ endAngle: 0 })
-              .style('fill', 'orange')
-              .attr('d', arc)
+          angular.forEach($scope.radialOptions, function (value, key) {
 
-          section2 = group.append('path')
+            arcs.push(group.append('path')
               .datum({ endAngle: 0 })
-              .style('fill', 'blue')
-              .attr('d', arc)
-
-          section3 = group.append('path')
-              .datum({ endAngle: 0 })
-              .style('fill', 'red')
-              .attr('d', arc)
-
-          section4 = group.append('path')
-              .datum({ endAngle: 0 })
-              .style('fill', 'green')
-              .attr('d', arc)
+              .style('fill', color(key))
+              .attr('d', arc))
+          });
         };
 
         // Creates a tween on the specified transition's "d" attribute, transitioning
@@ -88,7 +83,7 @@ angular.module('radialMenuApp')
 
         // Initialization.
         
-        initializeArc();
+        initializeArcs();
 
         // API.
         
@@ -96,21 +91,24 @@ angular.module('radialMenuApp')
         // can encapsulate the logic for tweening the arc in a separate function below.
         $scope.updateArc = function () {
 
-          section1.transition()
-            .duration(500)
-            .call(arcTween, tau)
+          // Open menu.
+          if (!isMenuOpen) {
+            angular.forEach(arcs, function (arc, key) {
 
-          section2.transition()
-            .duration(500)
-            .call(arcTween, 0.75 * tau)
+              arc.transition()
+                .duration(500)
+                .call(arcTween, (1/arcs.length) * (arcs.length - key) * tau)
 
-          section3.transition()
-            .duration(500)
-            .call(arcTween, 0.5 * tau)
+            });
+          }
+          // Close menu.
+          else {
+            console.log("Already open!");
+          }
 
-          section4.transition()
-            .duration(500)
-            .call(arcTween, 0.25 * tau)
+          // Toggle menu state.
+          isMenuOpen = !isMenuOpen;
+
         };
       }]
     };

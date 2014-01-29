@@ -16,7 +16,8 @@ angular.module('radialMenuApp', [
         templateUrl: 'views/scaled-bar-chart-page.html'
       })
       .when('/radial-menu', {
-        templateUrl: 'views/radial-menu-page.html'
+        templateUrl: 'views/radial-menu-page.html',
+        controller: 'MainCtrl'
       })
       .otherwise({
         redirectTo: '/'
