@@ -108,28 +108,38 @@ angular.module('radialMenuApp')
         // can encapsulate the logic for tweening the arc in a separate function below.
         $scope.updateArc = function () {
 
-          console.log(0, Math.PI / 2, Math.PI, 3 * Math.PI / 2, 2 * Math.PI);
           // Open menu.
           if (!isMenuOpen) {
             angular.forEach(arcs, function (arc, key) {
 
-              var newStartAngle = (arcs.length / tau) * (key - 1);
               var newEndAngle = (1/arcs.length) * (arcs.length - key) * tau;
 
-              console.log(newStartAngle, newEndAngle);
+              // newStartAngle is just offset by one pie arc.  Simple!
+              var newStartAngle = newEndAngle - (tau / arcs.length);
 
               arc.transition()
                 .duration(700)
                 .call(arcTween, newEndAngle)
-                //.transition()
-                //.duration(3000)
-                //.call(startArcTween, newStartAngle)
+                .transition()
+                .duration(300)
+                .call(startArcTween, newStartAngle)
               
             });
           }
           // Close menu.
           else {
-            console.log("Already open!");
+            // Set all starting and ending angles to zero for
+            // each arc.
+            angular.forEach(arcs, function (arc, key) {
+
+              arc.transition()
+                .duration(100)
+                .call(startArcTween, 0)
+                .transition()
+                .duration(1000)
+                .call(arcTween, 0)
+              
+            });
           }
 
           // Toggle menu state.
