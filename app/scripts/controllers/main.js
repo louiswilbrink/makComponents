@@ -12,13 +12,11 @@ angular.module('radialMenuApp')
       }
     };
 
-    var taskTotal = Util.randomNumberBetween(2, 7);
+    var taskTotal = Util.randomNumberBetween(3, 7);// Util.randomNumberBetween(2, 7);
 
     for (var i = 0; i < taskTotal; i++) {
       $scope.tasks.push(task);
     };
-
-    console.log($scope.tasks);
 
     $scope.mainCtrl = {
       entities: {

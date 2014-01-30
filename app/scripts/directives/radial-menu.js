@@ -43,7 +43,6 @@ angular.module('radialMenuApp')
           arc = d3.svg.arc()
             .innerRadius(innerRadius)
             .outerRadius(outerRadius)
-            .startAngle(0)
 
           // Create the SVG container, and apply a transform such that the origin is the
           // center of the canvas. This way, we don't need to position arcs individually.
@@ -52,14 +51,16 @@ angular.module('radialMenuApp')
 
           // Add the background arc, from 0 to 100% (τ).
           background = group.append('path')
-              .datum({ endAngle: tau })
+              .datum({ startAngle: 0, endAngle: tau })
               .style('fill', '#ddd')
               .attr('d', arc);
 
           angular.forEach($scope.radialOptions, function (value, key) {
 
+            var startAngle = (tau / $scope.radialOptions.length) * key;
+
             arcs.push(group.append('path')
-              .datum({ endAngle: 0 })
+              .datum({ startAngle: 0, endAngle: 0 })
               .style('fill', color(key))
               .attr('d', arc))
           });
@@ -71,11 +72,27 @@ angular.module('radialMenuApp')
 
           transition.attrTween('d', function (d) {
 
-            var interpolate = d3.interpolate(d.endAngle, newAngle);
+            var interpolateEndAngle = d3.interpolate(d.endAngle, newAngle);
 
             return function (t) {
               
-              d.endAngle = interpolate(t);
+              d.endAngle = interpolateEndAngle(t);
+              return arc(d);
+            };
+          });
+        };
+
+        // Creates a tween on the specified transition's "d" attribute, transitioning
+        // any selected arcs from their current angle to the specified new angle.
+        var startArcTween = function (transition, newAngle) {
+
+          transition.attrTween('d', function (d) {
+
+            var interpolate = d3.interpolate(d.startAngle, newAngle);
+
+            return function (t) {
+              
+              d.startAngle = interpolate(t);
               return arc(d);
             };
           });
@@ -91,14 +108,23 @@ angular.module('radialMenuApp')
         // can encapsulate the logic for tweening the arc in a separate function below.
         $scope.updateArc = function () {
 
+          console.log(0, Math.PI / 2, Math.PI, 3 * Math.PI / 2, 2 * Math.PI);
           // Open menu.
           if (!isMenuOpen) {
             angular.forEach(arcs, function (arc, key) {
 
-              arc.transition()
-                .duration(500)
-                .call(arcTween, (1/arcs.length) * (arcs.length - key) * tau)
+              var newStartAngle = (arcs.length / tau) * (key - 1);
+              var newEndAngle = (1/arcs.length) * (arcs.length - key) * tau;
 
+              console.log(newStartAngle, newEndAngle);
+
+              arc.transition()
+                .duration(700)
+                .call(arcTween, newEndAngle)
+                //.transition()
+                //.duration(3000)
+                //.call(startArcTween, newStartAngle)
+              
             });
           }
           // Close menu.
