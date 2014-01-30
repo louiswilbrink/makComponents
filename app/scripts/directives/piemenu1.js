@@ -29,6 +29,8 @@ angular.module('radialMenuApp')
           .innerRadius(innerRadius)
           .outerRadius(outerRadius);
 
+        console.log(arc);
+
         var arcs = svg.selectAll('g.arc')
             .data(pie(dataset))
             .enter()

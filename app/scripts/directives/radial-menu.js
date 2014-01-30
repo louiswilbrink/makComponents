@@ -12,8 +12,8 @@ angular.module('radialMenuApp')
 
         // Model.
         
-        var svg, arcs, arc, innerRadius, outerRadius, group, path, background, 
-            section1, section2, section3, section4,
+        var svg, labels, arcs, arc, innerRadius, outerRadius, groups, path,
+            background, section1, section2, section3, section4,
             width, height, tau;
         
         var color = d3.scale.category10();
@@ -28,6 +28,7 @@ angular.module('radialMenuApp')
           tau = 2 * Math.PI;
           innerRadius = 40;
           outerRadius = 240;
+          groups = [];
           arcs = [];
 
           svg = d3.select('.radial-menu')
@@ -37,38 +38,43 @@ angular.module('radialMenuApp')
               .attr('height', height)
               .style('border', '1px dashed gray')
 
-          // An arc function with all values bound except the endAngle. So, to compute an
-          // SVG path string for a given angle, we pass an object with an endAngle
-          // property to the `arc` function, and it will return the corresponding string.
+          // An arc function with all values bound except the start and end angle. This
+          // will be computed during fan-in and fan-out transitions.  So, to compute an
+          // SVG path string for a given angle, we pass an object with both startAngle
+          // and endAngle properties to the 'arc' function and recieve the corresponding
+          // string.
           arc = d3.svg.arc()
             .innerRadius(innerRadius)
             .outerRadius(outerRadius)
 
-          // Create the SVG container, and apply a transform such that the origin is the
-          // center of the canvas. This way, we don't need to position arcs individually.
-          group = svg.append('g')
+          var backgroundGroup = svg.append('g')
               .attr('transform', 'translate(' + width / 2 + ', ' + height / 2 + ')')
 
           // Add the background arc, from 0 to 100% (τ).
-          background = group.append('path')
+          background = backgroundGroup.append('path')
               .datum({ startAngle: 0, endAngle: tau })
               .style('fill', '#ddd')
               .attr('d', arc);
 
+          // Create each arc, keeping them 'invisible' for now by setting their start and
+          // end angles to 0.  Later, each arc will fan-out from this initial position.
           angular.forEach($scope.radialOptions, function (value, key) {
 
-            var startAngle = (tau / $scope.radialOptions.length) * key;
+            var group = svg.append('g')
+                .attr('transform', 'translate(' + width / 2 + ', ' + height / 2 + ')')
 
             arcs.push(group.append('path')
               .datum({ startAngle: 0, endAngle: 0 })
               .style('fill', color(key))
               .attr('d', arc))
+
+            groups.push(group);
           });
         };
 
         // Creates a tween on the specified transition's "d" attribute, transitioning
         // any selected arcs from their current angle to the specified new angle.
-        var arcTween = function (transition, newAngle) {
+        var endArcTween = function (transition, newAngle) {
 
           transition.attrTween('d', function (d) {
 
@@ -98,6 +104,25 @@ angular.module('radialMenuApp')
           });
         };
 
+        var drawLabel = function (drawLabel, key, startAngle, endAngle) {
+
+          var arc = d3.svg.arc()
+            .innerRadius(innerRadius)
+            .outerRadius(outerRadius)
+            .startAngle(startAngle)
+            .endAngle(endAngle)
+
+          var label = groups[key].append('text')
+              .text('hello')
+              .attr('text-anchor', 'middle')
+              .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+              .style('opacity', '0')
+              .transition()
+              .duration(300)
+              .delay(1000)
+              .style('opacity', '1')
+        };
+
         // Initialization.
         
         initializeArcs();
@@ -117,13 +142,17 @@ angular.module('radialMenuApp')
               // newStartAngle is just offset by one pie arc.  Simple!
               var newStartAngle = newEndAngle - (tau / arcs.length);
 
+              // Transition the end angle first, then transition the
+              // start angle quickly (which is hidden by the layers overlaping).
+              // In the end, we want as little overlap between arcs to occur so
+              // that distinct selection/clicking is achieved.
               arc.transition()
-                .duration(700)
-                .call(arcTween, newEndAngle)
-                .transition()
-                .duration(300)
-                .call(startArcTween, newStartAngle)
-              
+                  .duration(1000)
+                  .call(endArcTween, newEndAngle)
+                  .transition()
+                  .duration(100)
+                  .call(startArcTween, newStartAngle)
+                  .call(drawLabel, key, newStartAngle, newEndAngle)
             });
           }
           // Close menu.
@@ -132,17 +161,19 @@ angular.module('radialMenuApp')
             // each arc.
             angular.forEach(arcs, function (arc, key) {
 
+              // Transition the start angle first: then each arc can
+              // collapse to the initial starting point where both
+              // start and end angles are zero.
               arc.transition()
                 .duration(100)
                 .call(startArcTween, 0)
                 .transition()
                 .duration(1000)
-                .call(arcTween, 0)
-              
+                .call(endArcTween, 0)
             });
           }
 
-          // Toggle menu state.
+          // Toggle new menu state.
           isMenuOpen = !isMenuOpen;
 
         };
