@@ -26,43 +26,57 @@ angular.module('radialMenuApp')
               label: 'Sink',
               task: function () {
                 console.log('sinking..');
-              }
+              },
+              startAngle: 0,
+              endAngle: Math.PI / 6 
             },
             {
               label: 'Attach',
               task: function () {
                 console.log('Attaching');
-              }
+              },
+              startAngle: 0,
+              endAngle: 2 * (Math.PI / 6)
             },
             {
               label: 'Sink',
               task: function () {
                 console.log('sinking..');
-              }
+              },
+              startAngle: 0,
+              endAngle: 3 * (Math.PI / 6)
             },
             {
               label: 'Attach',
               task: function () {
                 console.log('Attaching');
-              }
+              },
+              startAngle: 0,
+              endAngle: 4 * (Math.PI / 6)
             },
             {
               label: 'Sink',
               task: function () {
                 console.log('sinking..');
-              }
+              },
+              startAngle: 0,
+              endAngle: 5 * (Math.PI / 6)
             },
             {
               label: 'Attach',
               task: function () {
                 console.log('Attaching');
-              }
+              },
+              startAngle: 0,
+              endAngle: 6 * (Math.PI / 6)
             },
             {
               label: 'Move',
               task: function () {
                 console.log('Moving');
-              }
+              },
+              startAngle: 0,
+              endAngle: 7 * (Math.PI / 6)
             }
           ],
         },

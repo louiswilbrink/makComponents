@@ -14,12 +14,10 @@ angular.module('radialMenuApp')
 
         var options = $scope.radialOptions;
 
-        var vis, labels, arcs, arc, innerRadius, outerRadius, groups, path,
-            background, section1, section2, section3, section4,
-            width, height, tau;
+        var vis, labels, arcs, arc, width, height, tau;
 
         var tau = 2 * Math.PI,
-            innerRadius = 40;
+            innerRadius = 40,
             outerRadius = 240;
         
         var color = d3.scale.category10();
@@ -50,23 +48,19 @@ angular.module('radialMenuApp')
         var drawArc = d3.svg.arc()
           .innerRadius(innerRadius)
           .outerRadius(outerRadius)
-          .startAngle(0 * (Math.PI/180))
+          .startAngle(0)
           .endAngle(function(d, i) {
             return Math.floor((d*6 * (Math.PI/180))*1000)/1000;
           });
 
         var arcTween = function (d, indx) {
-          console.log('current: ', this._current);
-          console.log('d: ', d);
-          var interp = d3.interpolate(this._current, d);    
+          var interpolate = d3.interpolate(this._current, d);    
 
           this._current = d;
 
           return function(t) { 
 
-            var tmp = interp(t); 
-
-            return drawArc(tmp, indx); 
+            return drawArc(interpolate(t)); 
           }
         };
 
@@ -85,26 +79,18 @@ angular.module('radialMenuApp')
           
         var render = function (dataset) {
 
-          groups = [];
-          arcs = [];
+          arcs = vis.selectAll("path.red-path").data(dataset);
 
-          var redArcs = vis.selectAll("path.red-path").data(dataset);
-
-          redArcs.transition()
+          arcs.transition()
             .duration(300)
-            .attr("fill", function(d){
-              var red = Math.floor((1 - d/60)*255);
-              return "rgb("+ red +", 51, 51)";
-            })
             .attrTween("d", arcTween);
 
-          redArcs.enter().append("svg:path")
+          arcs.enter().append("svg:path")
               .attr("class", "red-path")
-              .attr("transform", "translate(250,250)")
-              .attr("fill", function(d){
-                var red = Math.floor((1 - d/60)*255);
-                return "rgb("+ red +", 51, 51)";
+              .attr("fill", function(d, i){
+                return color(i);
               })
+              .attr("transform", "translate(250,250)")
               .attr("d", drawArc)
               .each(function(d){
                 this._current = d;
@@ -118,8 +104,6 @@ angular.module('radialMenuApp')
 
         // API.
         
-        // Use transition.call (identical to selection.call) so that we 
-        // can encapsulate the logic for tweening the arc in a separate function below.
         $scope.updateArc = function () {
 
           render(Util.getArrayOfRandomNumbers(6, 10, 55));
