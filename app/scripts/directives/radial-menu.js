@@ -11,6 +11,8 @@ angular.module('radialMenuApp')
       controller: ['$scope', 'Util', function ($scope, Util) {
 
         // Model.
+
+        var options = $scope.radialOptions;
         
         var svg, labels, arcs, arc, innerRadius, outerRadius, groups, path,
             background, section1, section2, section3, section4,
@@ -20,6 +22,26 @@ angular.module('radialMenuApp')
         var isMenuOpen = false;
 
         // Methods.
+        
+        var getArcAngles = function () {
+
+          var arcAngles = [];
+          var tau = 2 * Math.PI;
+
+          for (var i = 0; i < options.length; i++) {
+
+            var arcAngle = {};
+
+            arcAngle.newEndAngle = (1/options.length) * (options.length - i) * tau;
+
+            // newStartAngle is just offset by one pie arc.  Simple!
+            arcAngle.newStartAngle = arcAngle.newEndAngle - (tau / options.length);
+
+            arcAngles.push(arcAngle);
+          }
+
+          return arcAngles;
+        };
         
         var initializeArcs = function () {
 
@@ -58,7 +80,7 @@ angular.module('radialMenuApp')
 
           // Create each arc, keeping them 'invisible' for now by setting their start and
           // end angles to 0.  Later, each arc will fan-out from this initial position.
-          angular.forEach($scope.radialOptions, function (value, key) {
+          angular.forEach(options, function (value, key) {
 
             var group = svg.append('g')
                 .attr('transform', 'translate(' + width / 2 + ', ' + height / 2 + ')')
@@ -126,6 +148,7 @@ angular.module('radialMenuApp')
         // Initialization.
         
         initializeArcs();
+        console.log(getArcAngles());
 
         // API.
         
