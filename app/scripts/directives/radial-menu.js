@@ -50,11 +50,18 @@ angular.module('radialMenuApp')
           .outerRadius(outerRadius)
           .startAngle(0)
           .endAngle(function(d, i) {
-            return Math.floor((d*6 * (Math.PI/180))*1000)/1000;
+            return Math.floor((d.endAngle*6 * (Math.PI/180))*1000)/1000;
           });
 
-        var arcTween = function (d, indx) {
-          var interpolate = d3.interpolate(this._current, d);    
+        var arcTween = function (d) {
+
+          var interpolate = d3.interpolate({ 
+            startAngle: this._current.startAngle,
+            endAngle: this._current.endAngle
+          }, {
+            startAngle: d.startAngle,
+            endAngle: d.endAngle
+          });
 
           this._current = d;
 
@@ -64,7 +71,7 @@ angular.module('radialMenuApp')
           }
         };
 
-        var initialize = function () {
+        var initialize = function (dataset) {
 
           width = 500;
           height = 500;
@@ -75,15 +82,8 @@ angular.module('radialMenuApp')
               .attr('width', width)
               .attr('height', height)
               .style('border', '1px dashed gray')
-        };
-          
-        var render = function (dataset) {
 
           arcs = vis.selectAll("path.red-path").data(dataset);
-
-          arcs.transition()
-            .duration(300)
-            .attrTween("d", arcTween);
 
           arcs.enter().append("svg:path")
               .attr("class", "red-path")
@@ -96,18 +96,37 @@ angular.module('radialMenuApp')
                 this._current = d;
              });
         };
+          
+        var render = function (dataset) {
+
+          arcs = vis.selectAll("path.red-path").data(dataset);
+
+          arcs.transition()
+            .duration(300)
+            .attrTween("d", arcTween);
+
+        };
 
         // Initialization.
         
-        initialize();
-        render([0,0,0,0,0,0]);
+        // Make each arc start as a zero-sliver.
+        angular.forEach(options, function (option) {
+          option.startAngle = 0;
+          option.endAngle = Math.PI / 2;
+        });
+
+        initialize(options);
 
         // API.
         
         $scope.updateArc = function () {
 
-          render(Util.getArrayOfRandomNumbers(6, 10, 55));
+          // For now, just make all of the arcs expand to half-pie
+          angular.forEach(options, function (option) {
+            option.endAngle += Math.PI / 2;
+          });
 
+          render(options);
         };
       }]
     };
