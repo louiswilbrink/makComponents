@@ -21,27 +21,19 @@ angular.module('radialMenuApp')
             outerRadius = 240;
         
         var color = d3.scale.category10();
-        var isMenuOpen = false;
+        var isClosed = true;
 
         // Methods.
         
-        var getArcAngles = function () {
+        var addArcAngles = function () {
 
-          var arcAngles = [];
+          angular.forEach(options, function (option, key) {
 
-          for (var i = 0; i < options.length; i++) {
-
-            var arcAngle = {};
-
-            arcAngle.newEndAngle = (1/options.length) * (options.length - i) * tau;
+            option.endAngle = (1/options.length) * (options.length - key) * tau;
 
             // newStartAngle is just offset by one pie arc.  Simple!
-            arcAngle.newStartAngle = arcAngle.newEndAngle - (tau / options.length);
-
-            arcAngles.push(arcAngle);
-          }
-
-          return arcAngles;
+            option.startAngle = option.endAngle - (tau / options.length);
+          });
         };
 
         var drawArc = d3.svg.arc()
@@ -116,7 +108,7 @@ angular.module('radialMenuApp')
         // Make each arc start as a zero-sliver.
         angular.forEach(options, function (option) {
           option.startAngle = 0;
-          option.endAngle = Math.PI / 2;
+          option.endAngle = 0;
         });
 
         initialize(options);
@@ -125,12 +117,24 @@ angular.module('radialMenuApp')
         
         $scope.updateArc = function () {
 
-          // For now, just make all of the arcs expand to half-pie
-          angular.forEach(options, function (option) {
-            option.endAngle += Math.PI / 2;
-          });
+          if (isClosed) {
+            // Fan out the radial menu.
+            // Load each option with the proper arc angles.
+            addArcAngles();
+          }
+          else {
+            // Fan in and close the radial menu.
+        
+            // Make each arc start as a zero-sliver.
+            angular.forEach(options, function (option) {
+              option.startAngle = 0;
+              option.endAngle = 0;
+            });
+          }
 
           render(options);
+
+          isClosed = !isClosed;
         };
       }]
     };
