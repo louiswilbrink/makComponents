@@ -28,7 +28,6 @@ angular.module('radialMenuApp')
         var getArcAngles = function () {
 
           var arcAngles = [];
-          var tau = 2 * Math.PI;
 
           for (var i = 0; i < options.length; i++) {
 
@@ -48,9 +47,11 @@ angular.module('radialMenuApp')
         var drawArc = d3.svg.arc()
           .innerRadius(innerRadius)
           .outerRadius(outerRadius)
-          .startAngle(0)
-          .endAngle(function(d, i) {
-            return Math.floor((d.endAngle*6 * (Math.PI/180))*1000)/1000;
+          .startAngle(function (d) {
+            return d.startAngle;
+          })
+          .endAngle(function (d) {
+            return d.endAngle;
           });
 
         var arcTween = function (d) {
@@ -63,7 +64,8 @@ angular.module('radialMenuApp')
             endAngle: d.endAngle
           });
 
-          this._current = d;
+          this._current.startAngle = d.startAngle;
+          this._current.endAngle = d.endAngle;
 
           return function(t) { 
 
@@ -93,7 +95,9 @@ angular.module('radialMenuApp')
               .attr("transform", "translate(250,250)")
               .attr("d", drawArc)
               .each(function(d){
-                this._current = d;
+                this._current = {};
+                this._current.startAngle = d.startAngle;
+                this._current.endAngle = d.endAngle;
              });
         };
           
@@ -102,7 +106,7 @@ angular.module('radialMenuApp')
           arcs = vis.selectAll("path.red-path").data(dataset);
 
           arcs.transition()
-            .duration(300)
+            .duration(1000)
             .attrTween("d", arcTween);
 
         };
