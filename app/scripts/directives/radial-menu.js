@@ -14,7 +14,7 @@ angular.module('radialMenuApp')
 
         var options = $scope.radialOptions;
 
-        var vis, labels, arcs, arc, width, height, tau;
+        var vis, groups, labels, arcs, arc, width, height, tau;
 
         var tau = 2 * Math.PI,
             innerRadius = 40,
@@ -25,7 +25,7 @@ angular.module('radialMenuApp')
 
         // Methods.
         
-        var addArcAngles = function () {
+        var assignExpandedValues = function () {
 
           angular.forEach(options, function (option, key) {
 
@@ -33,6 +33,14 @@ angular.module('radialMenuApp')
 
             // newStartAngle is just offset by one pie arc.  Simple!
             option.startAngle = option.endAngle - (tau / options.length);
+          });
+        };
+
+        var assignCollapseAngleValues = function () {
+          // Make each arc a zero-sliver.
+          angular.forEach(options, function (option) {
+            option.startAngle = 0;
+            option.endAngle = 0;
           });
         };
 
@@ -48,19 +56,31 @@ angular.module('radialMenuApp')
 
         var arcTween = function (d) {
 
-          var interpolate = d3.interpolate({ 
-            startAngle: this._current.startAngle,
-            endAngle: this._current.endAngle
-          }, {
-            startAngle: d.startAngle,
-            endAngle: d.endAngle
-          });
+          // Create an interpolator to generate values between initial
+          // and final states.  This will be handed to the arc-generator,
+          // providing angle values for each instant of time.
+          var interpolate = d3.interpolate(
+            // Initial values.  Stored these from previous 'd' data.
+            {
+              startAngle: this._current.startAngle,
+              endAngle: this._current.endAngle
+            },
+            // Final values.  These are the newest 'd' data, and wrote
+            // over the previous 'd' data.
+            {
+              startAngle: d.startAngle,
+              endAngle: d.endAngle
+            });
 
+          // Keep track of latest 'd' data for next transition.
           this._current.startAngle = d.startAngle;
           this._current.endAngle = d.endAngle;
 
           return function(t) { 
 
+            // this arc generator will use the output values of a time-based
+            // interpolator function.  In this way, the arc is drawn and morphed
+            // over time to a final shape.
             return drawArc(interpolate(t)); 
           }
         };
@@ -77,9 +97,11 @@ angular.module('radialMenuApp')
               .attr('height', height)
               .style('border', '1px dashed gray')
 
-          arcs = vis.selectAll("path.red-path").data(dataset);
-
-          arcs.enter().append("svg:path")
+          arcs = vis.selectAll('g')
+            .data(dataset)
+            .enter()
+            .append('g') 
+            .append("svg:path")
               .attr("class", "red-path")
               .attr("fill", function(d, i){
                 return color(i);
@@ -91,11 +113,11 @@ angular.module('radialMenuApp')
                 this._current.startAngle = d.startAngle;
                 this._current.endAngle = d.endAngle;
              });
+
+          groups = vis.selectAll('g');
         };
           
         var render = function (dataset) {
-
-          arcs = vis.selectAll("path.red-path").data(dataset);
 
           arcs.transition()
             .duration(1000)
@@ -105,12 +127,7 @@ angular.module('radialMenuApp')
 
         // Initialization.
         
-        // Make each arc start as a zero-sliver.
-        angular.forEach(options, function (option) {
-          option.startAngle = 0;
-          option.endAngle = 0;
-        });
-
+        assignCollapseAngleValues();
         initialize(options);
 
         // API.
@@ -120,20 +137,16 @@ angular.module('radialMenuApp')
           if (isClosed) {
             // Fan out the radial menu.
             // Load each option with the proper arc angles.
-            addArcAngles();
+            assignExpandedValues();
           }
           else {
             // Fan in and close the radial menu.
-        
-            // Make each arc start as a zero-sliver.
-            angular.forEach(options, function (option) {
-              option.startAngle = 0;
-              option.endAngle = 0;
-            });
+            assignCollapseAngleValues();
           }
 
           render(options);
 
+          // Toggle state.
           isClosed = !isClosed;
         };
       }]
