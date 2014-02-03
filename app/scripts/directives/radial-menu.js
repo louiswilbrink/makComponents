@@ -92,12 +92,11 @@ angular.module('radialMenuApp')
 
         var initialize = function (dataset) {
 
-          vis = d3.select('.radial-menu')
-            .select('.sandbox')
+          vis = d3.select('.radial-menu-container')
             .append('svg')
               .attr('width', width)
               .attr('height', height)
-              .style('border', '1px dashed gray')
+              //.style('border', '1px dashed gray')
 
           // Create arcs nested in groups.
           arcs = vis.selectAll('g')
@@ -130,14 +129,7 @@ angular.module('radialMenuApp')
             .attrTween("d", arcTween);
         };
 
-        // Initialization.
-        
-        assignCollapseAngleValues();
-        initialize(options);
-
-        // API.
-        
-        $scope.updateArc = function () {
+        var updateArc = function () {
 
           if (isClosed) {
             // Fan out the radial menu.
@@ -183,6 +175,17 @@ angular.module('radialMenuApp')
           // Toggle state.
           isClosed = !isClosed;
         };
+
+        // Initialization.
+        
+        assignCollapseAngleValues();
+        initialize(options);
+
+        // API.
+        
+        $scope.$on('Expand Radial Menu', function () {
+          updateArc();
+        });
       }]
     };
   });

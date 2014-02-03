@@ -116,4 +116,5 @@ angular.module('radialMenuApp')
         value: 2
       }
     ];
+
   }]);
