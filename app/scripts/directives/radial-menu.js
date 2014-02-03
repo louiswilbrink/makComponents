@@ -49,6 +49,12 @@ angular.module('radialMenuApp')
           });
         };
 
+        var clickFeedback = function (path) {
+          console.log('I\'ve been clicked!');
+          //d3.select(path)
+              //.attr('fill', 'red');
+        };
+
         var drawArc = d3.svg.arc()
           .innerRadius(innerRadius)
           .outerRadius(outerRadius)
@@ -104,14 +110,15 @@ angular.module('radialMenuApp')
             .enter()
             .append('g') 
             .append("svg:path")
-              .attr("class", "red-path")
               .attr("fill", function(d, i){
                 return color(i);
               })
               .attr("transform", "translate(" + width / 2 + ", " + height / 2 + ")")
               .attr("d", drawArc)
               .on('click', function (d) {
-                d.task();
+                console.log(d.emit);
+                $scope.$emit(d.emit.message, d.emit.item);
+                clickFeedback(this);
               })
               .each(function(d){
                 this._current = {};
@@ -132,6 +139,10 @@ angular.module('radialMenuApp')
         var updateArc = function () {
 
           if (isClosed) {
+        
+            assignCollapseAngleValues();
+            initialize(options);
+
             // Fan out the radial menu.
             // Load each option with the proper arc angles.
             assignExpandedValues();
@@ -150,10 +161,11 @@ angular.module('radialMenuApp')
                   return "translate(" + translatePosition + ")";
                 })
                 .on('click', function (d) {
-                  d.task();
+                  console.log(d.emit);
+                  $scope.$emit(d.emit.message, d.emit.item);
+                  clickFeedback(this);
                 })
-
-            labels.style('opacity', '0')
+                .style('opacity', '0')
                 .transition()
                 .duration(300)
                 .delay(1000)
@@ -170,6 +182,8 @@ angular.module('radialMenuApp')
                 //.remove()
 
             render(options);
+
+            vis.transition().delay(800).remove();
           }
 
           // Toggle state.
@@ -177,9 +191,6 @@ angular.module('radialMenuApp')
         };
 
         // Initialization.
-        
-        assignCollapseAngleValues();
-        initialize(options);
 
         // API.
         

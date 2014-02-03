@@ -112,6 +112,10 @@ path {
     stroke-width:3;
 }
 
+path .clicked {
+    fill: rgba(255, 0, 68, 0.7);
+}
+
 path:hover {
     fill: rgba(0, 0, 68, 0.85);
 }

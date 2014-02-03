@@ -3,21 +3,7 @@
 angular.module('radialMenuApp')
   .controller('MainCtrl', ['$scope', 'Util', function ($scope, Util) {
 
-    $scope.tasks = [];
     $scope.width = 500;
-
-    var task = {
-      label: 'label',
-      task: function () {
-        console.log('swell day huh?');
-      }
-    };
-
-    var taskTotal = 4;//Util.randomNumberBetween(2, 7);
-
-    for (var i = 0; i < taskTotal; i++) {
-      $scope.tasks.push(task);
-    };
 
     $scope.mainCtrl = {
       entities: {
@@ -25,96 +11,74 @@ angular.module('radialMenuApp')
           tasks: [
             {
               label: 'Sink',
-              task: function () {
-                console.log('sinking..');
+              emit: {
+                message: 'Menu Item Clicked',
+                item: 'Sinking entity'
               },
               startAngle: 0,
               endAngle: Math.PI / 6 
             },
             {
               label: 'Attach',
-              task: function () {
-                console.log('Attaching');
+              emit: {
+                message: 'Menu Item Clicked',
+                item: 'Attaching to entity'
               },
               startAngle: 0,
               endAngle: 2 * (Math.PI / 6)
             },
             {
-              label: 'Sink',
-              task: function () {
-                console.log('sinking..');
+              label: 'Marauding',
+              emit: {
+                message: 'Menu Item Clicked',
+                item: 'Entity is on a marauding rampage!'
               },
               startAngle: 0,
               endAngle: 3 * (Math.PI / 6)
             },
             {
-              label: 'Attach',
-              task: function () {
-                console.log('Attaching');
+              label: 'Destroy',
+              emit: {
+                message: 'Menu Item Clicked',
+                item: 'Entity Destroyed'
               },
               startAngle: 0,
               endAngle: 4 * (Math.PI / 6)
             },
             {
-              label: 'Sink',
-              task: function () {
-                console.log('sinking..');
+              label: 'Protect',
+              emit: {
+                message: 'Menu Item Clicked',
+                item: 'Protect the area!'
               },
               startAngle: 0,
               endAngle: 5 * (Math.PI / 6)
             },
             {
-              label: 'Attach',
-              task: function () {
-                console.log('Attaching');
+              label: 'Retreat',
+              emit: {
+                message: 'Menu Item Clicked',
+                item: 'Entity is retreating'
               },
               startAngle: 0,
               endAngle: 6 * (Math.PI / 6)
             },
             {
               label: 'Move',
-              task: function () {
-                console.log('Moving');
+              emit: {
+                message: 'Menu Item Clicked',
+                item: 'Target is moving to a new location'
               },
               startAngle: 0,
               endAngle: 7 * (Math.PI / 6)
             }
           ],
-        },
-        jet: {
-          tasks: [
-            {
-              label: 'Destroy',
-              task: function () {
-                console.log('Destroying..');
-              }
-            },
-            {
-              label: 'Attach',
-              task: function () {
-                console.log('Attaching');
-              }
-            },
-            {
-              label: 'Move',
-              task: function () {
-                console.log('Moving');
-              }
-            }
-          ]
         }
       }
     };
 
-    $scope.data = [
-      {
-        label: 'Sink',
-        value: 1
-      },
-      {
-        label: 'Attach',
-        value: 2
-      }
-    ];
-
+    $scope.$on('Menu Item Clicked', function (event, item) {
+      console.log('Got out!', item);
+      $scope.entityInstructions = item;
+    });
   }]);
