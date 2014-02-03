@@ -4,7 +4,8 @@ angular.module('radialMenuApp')
   .directive('radialMenu', function () {
     return {
       scope: {
-        radialOptions: '='
+        radialOptions: '=',
+        width: '='
       },
       templateUrl: 'views/radial-menu.html',
       restrict: 'E',
@@ -12,19 +13,20 @@ angular.module('radialMenuApp')
 
         // Model.
 
-        var options = $scope.radialOptions;
+        var options, width, height, vis, groups, labels, arcs,
+            innerRadius, outerRadius, tau, color, isClosed;
 
-        var vis, groups, labels, arcs;
+        // This menu should always be a square.
+        width = height = $scope.width;
 
-        var tau = 2 * Math.PI,
-            innerRadius = 40,
-            outerRadius = 240,
-            width = 500,
-            height = 500;
+        options = $scope.radialOptions;
 
-        
-        var color = d3.scale.category10();
-        var isClosed = true;
+        innerRadius = height / 10,
+        outerRadius = height / 2;
+
+        tau = 2 * Math.PI;
+        color = d3.scale.category10();
+        isClosed = true;
 
         // Methods.
         
@@ -100,7 +102,6 @@ angular.module('radialMenuApp')
           // Create arcs nested in groups.
           arcs = vis.selectAll('g')
             .data(dataset)
-
             .enter()
             .append('g') 
             .append("svg:path")
@@ -110,6 +111,9 @@ angular.module('radialMenuApp')
               })
               .attr("transform", "translate(" + width / 2 + ", " + height / 2 + ")")
               .attr("d", drawArc)
+              .on('click', function (d) {
+                d.task();
+              })
               .each(function(d){
                 this._current = {};
                 this._current.startAngle = d.startAngle;
@@ -143,13 +147,18 @@ angular.module('radialMenuApp')
             render(options);
 
             labels = groups.append('text')
-                .text('hello')
+                .text(function (d) {
+                  return d.label;
+                })
                 .attr('text-anchor', 'middle')
                 .attr("transform", function(d) { 
                   var translatePosition = drawArc.centroid({ innerRadius: innerRadius, outerRadius: outerRadius, startAngle: d.startAngle, endAngle: d.endAngle });
                   translatePosition[0] += width / 2;
                   translatePosition[1] += height / 2;
                   return "translate(" + translatePosition + ")";
+                })
+                .on('click', function (d) {
+                  d.task();
                 })
 
             labels.style('opacity', '0')

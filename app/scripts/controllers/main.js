@@ -4,6 +4,7 @@ angular.module('radialMenuApp')
   .controller('MainCtrl', ['$scope', 'Util', function ($scope, Util) {
 
     $scope.tasks = [];
+    $scope.width = 500;
 
     var task = {
       label: 'label',
