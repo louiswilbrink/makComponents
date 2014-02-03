@@ -14,11 +14,14 @@ angular.module('radialMenuApp')
 
         var options = $scope.radialOptions;
 
-        var vis, groups, labels, arcs, arc, width, height, tau;
+        var vis, groups, labels, arcs;
 
         var tau = 2 * Math.PI,
             innerRadius = 40,
-            outerRadius = 240;
+            outerRadius = 240,
+            width = 500,
+            height = 500;
+
         
         var color = d3.scale.category10();
         var isClosed = true;
@@ -58,14 +61,14 @@ angular.module('radialMenuApp')
 
           // Create an interpolator to generate values between initial
           // and final states.  This will be handed to the arc-generator,
-          // providing angle values for each instant of time.
+          // providing angle values at each instant of time.
           var interpolate = d3.interpolate(
             // Initial values.  Stored these from previous 'd' data.
             {
               startAngle: this._current.startAngle,
               endAngle: this._current.endAngle
             },
-            // Final values.  These are the newest 'd' data, and wrote
+            // Final values.  This is the newest 'd' data, which wrote
             // over the previous 'd' data.
             {
               startAngle: d.startAngle,
@@ -87,9 +90,6 @@ angular.module('radialMenuApp')
 
         var initialize = function (dataset) {
 
-          width = 500;
-          height = 500;
-
           vis = d3.select('.radial-menu')
             .select('.sandbox')
             .append('svg')
@@ -97,8 +97,10 @@ angular.module('radialMenuApp')
               .attr('height', height)
               .style('border', '1px dashed gray')
 
+          // Create arcs nested in groups.
           arcs = vis.selectAll('g')
             .data(dataset)
+
             .enter()
             .append('g') 
             .append("svg:path")
@@ -106,7 +108,7 @@ angular.module('radialMenuApp')
               .attr("fill", function(d, i){
                 return color(i);
               })
-              .attr("transform", "translate(250,250)")
+              .attr("transform", "translate(" + width / 2 + ", " + height / 2 + ")")
               .attr("d", drawArc)
               .each(function(d){
                 this._current = {};
@@ -122,7 +124,6 @@ angular.module('radialMenuApp')
           arcs.transition()
             .duration(1000)
             .attrTween("d", arcTween);
-
         };
 
         // Initialization.
@@ -138,13 +139,37 @@ angular.module('radialMenuApp')
             // Fan out the radial menu.
             // Load each option with the proper arc angles.
             assignExpandedValues();
+
+            render(options);
+
+            labels = groups.append('text')
+                .text('hello')
+                .attr('text-anchor', 'middle')
+                .attr("transform", function(d) { 
+                  var translatePosition = drawArc.centroid({ innerRadius: innerRadius, outerRadius: outerRadius, startAngle: d.startAngle, endAngle: d.endAngle });
+                  translatePosition[0] += width / 2;
+                  translatePosition[1] += height / 2;
+                  return "translate(" + translatePosition + ")";
+                })
+
+            labels.style('opacity', '0')
+                .transition()
+                .duration(300)
+                .delay(1000)
+                .style('opacity', '1')
           }
           else {
             // Fan in and close the radial menu.
             assignCollapseAngleValues();
-          }
 
-          render(options);
+            vis.selectAll('text')
+                .transition()
+                .duration(300)
+                .style('opacity', '0')
+                //.remove()
+
+            render(options);
+          }
 
           // Toggle state.
           isClosed = !isClosed;
