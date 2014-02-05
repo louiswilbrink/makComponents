@@ -116,7 +116,6 @@ angular.module('radialMenuApp')
               .attr("transform", "translate(" + width / 2 + ", " + height / 2 + ")")
               .attr("d", drawArc)
               .on('click', function (d) {
-                console.log(d.emit);
                 $scope.$emit(d.emit.message, d.emit.item);
                 clickFeedback(this);
               })

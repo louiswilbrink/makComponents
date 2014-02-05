@@ -77,8 +77,10 @@ angular.module('radialMenuApp')
       }
     };
 
+    $scope.main = {};
+
     $scope.$on('Menu Item Clicked', function (event, item) {
       console.log('Got out!', item);
-      $scope.entityInstructions = item;
+      $scope.main.entityInstructions = item;
     });
   }]);
