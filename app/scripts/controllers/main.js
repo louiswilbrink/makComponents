@@ -5,6 +5,24 @@ angular.module('radialMenuApp')
 
     $scope.width = 500;
 
+    $scope.tag = 'radial-menu';
+    $scope.attributeList = [
+      {
+        name: 'width',
+        type: 'integer'
+      },
+      {
+        name: 'options',
+        type: 'object'
+      },
+      {
+        name: 'on-menu-option-clicked',
+        type: 'function'
+      }
+    ];
+
+    $scope.isClosed = false;
+
     $scope.mainCtrl = {
       entities: {
         ddg: {
@@ -77,10 +95,11 @@ angular.module('radialMenuApp')
       }
     };
 
-    $scope.main = {};
+    $scope.onMenuOptionClicked = function (item) {
+      console.log(item);
+    };
 
-    $scope.$on('Menu Item Clicked', function (event, item) {
-      console.log('Got out!', item);
-      $scope.main.entityInstructions = item;
-    });
+    $scope.toggleMenu = function () {
+      $scope.isClosed = !$scope.isClosed;
+    };
   }]);

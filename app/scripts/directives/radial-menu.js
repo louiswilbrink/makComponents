@@ -5,7 +5,9 @@ angular.module('radialMenuApp')
     return {
       scope: {
         radialOptions: '=',
-        width: '='
+        width: '=',
+        onMenuOptionClicked: '=',
+        isClosed: '='
       },
       templateUrl: 'views/radial-menu.html',
       restrict: 'E',
@@ -14,7 +16,7 @@ angular.module('radialMenuApp')
         // Model.
 
         var options, width, height, vis, groups, labels, arcs,
-            innerRadius, outerRadius, tau, color, isClosed;
+            innerRadius, outerRadius, tau, color;
 
         // This menu should always be a square.
         width = height = $scope.width;
@@ -26,11 +28,10 @@ angular.module('radialMenuApp')
 
         tau = 2 * Math.PI;
         color = d3.scale.category10();
-        isClosed = true;
 
         // Methods.
         
-        var assignExpandedValues = function () {
+        var assignExpandedAngleValues = function () {
 
           angular.forEach(options, function (option, key) {
 
@@ -116,8 +117,8 @@ angular.module('radialMenuApp')
               .attr("transform", "translate(" + width / 2 + ", " + height / 2 + ")")
               .attr("d", drawArc)
               .on('click', function (d) {
-                $scope.$emit(d.emit.message, d.emit.item);
-                clickFeedback(this);
+                //clickFeedback(this);
+                $scope.$apply($scope.onMenuOptionClicked(d.emit.item));
               })
               .each(function(d){
                 this._current = {};
@@ -137,14 +138,14 @@ angular.module('radialMenuApp')
 
         var updateArc = function () {
 
-          if (isClosed) {
+          if ($scope.isClosed) {
         
             assignCollapseAngleValues();
             initialize(options);
 
             // Fan out the radial menu.
             // Load each option with the proper arc angles.
-            assignExpandedValues();
+            assignExpandedAngleValues();
 
             render(options);
 
@@ -160,9 +161,8 @@ angular.module('radialMenuApp')
                   return "translate(" + translatePosition + ")";
                 })
                 .on('click', function (d) {
-                  console.log(d.emit);
-                  $scope.$emit(d.emit.message, d.emit.item);
-                  clickFeedback(this);
+                  //clickFeedback(this);
+                  $scope.$apply($scope.onMenuOptionClicked(d.emit.item));
                 })
                 .style('opacity', '0')
                 .transition()
@@ -184,17 +184,16 @@ angular.module('radialMenuApp')
 
             vis.transition().delay(800).remove();
           }
-
-          // Toggle state.
-          isClosed = !isClosed;
         };
 
         // Initialization.
 
-        // API.
+        // Event handlers.
         
-        $scope.$on('Expand Radial Menu', function () {
-          updateArc();
+        $scope.$watch('isClosed', function (newValue, oldValue) {
+          if (newValue !== oldValue) {
+            updateArc();
+          }
         });
       }]
     };
