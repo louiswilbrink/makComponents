@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('radialMenuApp')
+angular.module('makComponents')
   .directive('pieMenuTwo', function () {
     return {
       templateUrl: 'views/piemenutwo.html',

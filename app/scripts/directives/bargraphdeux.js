@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('radialMenuApp')
+angular.module('makComponents')
   .directive('barGraphDeux', function () {
     return {
       templateUrl: 'views/bargraphdeux.html',

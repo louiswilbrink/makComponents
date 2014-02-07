@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('radialMenuApp')
+angular.module('makComponents')
   .directive('scatterPlot', function () {
     return {
       templateUrl: 'views/scatterplot.html',

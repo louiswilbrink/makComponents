@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('radialMenuApp')
+angular.module('makComponents')
   .directive('pieMenu', function ($timeout) {
     return {
       templateUrl: 'views/piemenu.html',

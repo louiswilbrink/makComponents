@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('radialMenuApp')
+angular.module('makComponents')
   .directive('barChart', function () {
     return {
       templateUrl: 'views/barchart.html',

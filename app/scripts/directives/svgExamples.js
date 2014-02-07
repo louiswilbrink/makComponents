@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('radialMenuApp')
+angular.module('makComponents')
   .directive('svgExamples', function () {
     return {
       templateUrl: 'views/svgExamples.html',

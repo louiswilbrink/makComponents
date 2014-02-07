@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('radialMenuApp')
+angular.module('makComponents')
   .directive('directiveSyntax', function () {
     return {
       templateUrl: 'views/directive-syntax.html',

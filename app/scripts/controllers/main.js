@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('radialMenuApp')
+angular.module('makComponents')
   .controller('MainCtrl', ['$scope', 'Util', function ($scope, Util) {
 
     $scope.width = 500;

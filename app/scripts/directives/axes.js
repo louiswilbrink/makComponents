@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('radialMenuApp')
+angular.module('makComponents')
   .directive('axes', function () {
     return {
       templateUrl: 'views/axes.html',

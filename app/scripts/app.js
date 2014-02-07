@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('radialMenuApp', [
+angular.module('makComponents', [
   'ngRoute'
 ])
   .config(function ($routeProvider) {

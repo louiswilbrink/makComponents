@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('radialMenuApp')
+angular.module('makComponents')
   .directive('scales', function () {
     return {
       templateUrl: 'views/scales.html',

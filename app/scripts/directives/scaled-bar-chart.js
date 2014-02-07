@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('radialMenuApp')
+angular.module('makComponents')
   .directive('scaledBarChart', function () {
     return {
       templateUrl: 'views/scaled-bar-chart.html',
