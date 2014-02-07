@@ -4,9 +4,9 @@ angular.module('makComponents')
   .directive('radialMenu', function () {
     return {
       scope: {
-        radialOptions: '=',
-        width: '=',
-        onMenuOptionClicked: '=',
+        options: '=',
+        radius: '=',
+        onOptionClick: '=',
         isClosed: '='
       },
       templateUrl: 'views/radial-menu.html',
@@ -15,16 +15,16 @@ angular.module('makComponents')
 
         // Model.
 
-        var options, width, height, vis, groups, labels, arcs,
+        var options, radius, vis, groups, labels, arcs,
             innerRadius, outerRadius, tau, color;
 
         // This menu should always be a square.
-        width = height = $scope.width;
+        radius = $scope.radius;
 
-        options = $scope.radialOptions;
+        options = $scope.options;
 
-        innerRadius = height / 10,
-        outerRadius = height / 2;
+        innerRadius = radius / 10,
+        outerRadius = radius;
 
         tau = 2 * Math.PI;
         color = d3.scale.category10();
@@ -101,8 +101,8 @@ angular.module('makComponents')
 
           vis = d3.select('.radial-menu-container')
             .append('svg')
-              .attr('width', width)
-              .attr('height', height)
+              .attr('width', radius * 2)
+              .attr('height', radius * 2)
               //.style('border', '1px dashed gray')
 
           // Create arcs nested in groups.
@@ -114,11 +114,11 @@ angular.module('makComponents')
               .attr("fill", function(d, i){
                 return color(i);
               })
-              .attr("transform", "translate(" + width / 2 + ", " + height / 2 + ")")
+              .attr("transform", "translate(" + radius + ", " + radius + ")")
               .attr("d", drawArc)
               .on('click', function (d) {
                 //clickFeedback(this);
-                $scope.$apply($scope.onMenuOptionClicked(d.emit.item));
+                $scope.$apply($scope.onOptionClick(d.label));
               })
               .each(function(d){
                 this._current = {};
@@ -156,13 +156,13 @@ angular.module('makComponents')
                 .attr('text-anchor', 'middle')
                 .attr("transform", function(d) { 
                   var translatePosition = drawArc.centroid({ innerRadius: innerRadius, outerRadius: outerRadius, startAngle: d.startAngle, endAngle: d.endAngle });
-                  translatePosition[0] += width / 2;
-                  translatePosition[1] += height / 2;
+                  translatePosition[0] += radius;
+                  translatePosition[1] += radius;
                   return "translate(" + translatePosition + ")";
                 })
                 .on('click', function (d) {
                   //clickFeedback(this);
-                  $scope.$apply($scope.onMenuOptionClicked(d.emit.item));
+                  $scope.$apply($scope.onOptionClick(d.label));
                 })
                 .style('opacity', '0')
                 .transition()
