@@ -95,7 +95,7 @@ angular.module('makComponents')
             .append('svg')
               .attr('width', $scope.radius * 2)
               .attr('height', $scope.radius * 2)
-              //.style('border', '1px dashed gray')
+              .classed('radial-menu-svg', true)
 
           // Create arcs nested in groups.
           arcs = vis.selectAll('g')
@@ -124,7 +124,7 @@ angular.module('makComponents')
         var render = function (dataset) {
 
           arcs.transition()
-            .duration(1000)
+            .duration(500)
             .attrTween("d", arcTween);
         };
 
@@ -159,8 +159,8 @@ angular.module('makComponents')
                 })
                 .style('opacity', '0')
                 .transition()
-                .duration(300)
-                .delay(1000)
+                .duration(200)
+                .delay(500)
                 .style('opacity', '1')
           }
           else {
@@ -169,13 +169,12 @@ angular.module('makComponents')
 
             vis.selectAll('text')
                 .transition()
-                .duration(300)
+                .duration(200)
                 .style('opacity', '0')
-                //.remove()
 
             render($scope.options);
 
-            vis.transition().delay(800).remove();
+            vis.transition().delay(300).remove();
           }
         };
 
