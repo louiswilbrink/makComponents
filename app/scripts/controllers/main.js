@@ -37,7 +37,7 @@ angular.module('makComponents')
     $scope.radialMenu.radius = 250;
     $scope.radialMenu.innerRadius = 35;
 
-    $scope.radialMenu.isClosed = false;
+    $scope.radialMenu.isClosed = true;
 
     $scope.radialMenu.entities = {
       ddg: {

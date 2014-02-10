@@ -130,7 +130,7 @@ angular.module('makComponents')
 
         var updateArc = function () {
 
-          if ($scope.isClosed) {
+          if (!$scope.isClosed) {
         
             assignCollapseAngleValues();
             initialize($scope.options);
@@ -146,6 +146,7 @@ angular.module('makComponents')
                   return d.label;
                 })
                 .attr('text-anchor', 'middle')
+                .attr('fill', 'white')
                 .attr("transform", function(d) { 
                   var translatePosition = drawArc.centroid({ innerRadius: $scope.innerRadius, outerRadius: $scope.radius, startAngle: d.startAngle, endAngle: d.endAngle });
                   translatePosition[0] += $scope.radius;
