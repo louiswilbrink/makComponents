@@ -6,6 +6,7 @@ angular.module('makComponents')
       scope: {
         options: '=',
         radius: '=',
+        innerRadius: '=',
         onOptionClick: '=',
         isClosed: '='
       },
@@ -15,16 +16,7 @@ angular.module('makComponents')
 
         // Model.
 
-        var options, radius, vis, groups, labels, arcs,
-            innerRadius, outerRadius, tau, color;
-
-        // This menu should always be a square.
-        radius = $scope.radius;
-
-        options = $scope.options;
-
-        innerRadius = radius / 10,
-        outerRadius = radius;
+        var vis, groups, labels, arcs, tau, color;
 
         tau = 2 * Math.PI;
         color = d3.scale.category10();
@@ -33,18 +25,18 @@ angular.module('makComponents')
         
         var assignExpandedAngleValues = function () {
 
-          angular.forEach(options, function (option, key) {
+          angular.forEach($scope.options, function (option, key) {
 
-            option.endAngle = (1/options.length) * (options.length - key) * tau;
+            option.endAngle = (1/$scope.options.length) * ($scope.options.length - key) * tau;
 
             // newStartAngle is just offset by one pie arc.  Simple!
-            option.startAngle = option.endAngle - (tau / options.length);
+            option.startAngle = option.endAngle - (tau / $scope.options.length);
           });
         };
 
         var assignCollapseAngleValues = function () {
           // Make each arc a zero-sliver.
-          angular.forEach(options, function (option) {
+          angular.forEach($scope.options, function (option) {
             option.startAngle = 0;
             option.endAngle = 0;
           });
@@ -57,8 +49,8 @@ angular.module('makComponents')
         };
 
         var drawArc = d3.svg.arc()
-          .innerRadius(innerRadius)
-          .outerRadius(outerRadius)
+          .innerRadius($scope.innerRadius)
+          .outerRadius($scope.radius)
           .startAngle(function (d) {
             return d.startAngle;
           })
@@ -101,8 +93,8 @@ angular.module('makComponents')
 
           vis = d3.select('.radial-menu-container')
             .append('svg')
-              .attr('width', radius * 2)
-              .attr('height', radius * 2)
+              .attr('width', $scope.radius * 2)
+              .attr('height', $scope.radius * 2)
               //.style('border', '1px dashed gray')
 
           // Create arcs nested in groups.
@@ -114,7 +106,7 @@ angular.module('makComponents')
               .attr("fill", function(d, i){
                 return color(i);
               })
-              .attr("transform", "translate(" + radius + ", " + radius + ")")
+              .attr("transform", "translate(" + $scope.radius + ", " + $scope.radius + ")")
               .attr("d", drawArc)
               .on('click', function (d) {
                 //clickFeedback(this);
@@ -141,13 +133,13 @@ angular.module('makComponents')
           if ($scope.isClosed) {
         
             assignCollapseAngleValues();
-            initialize(options);
+            initialize($scope.options);
 
             // Fan out the radial menu.
             // Load each option with the proper arc angles.
             assignExpandedAngleValues();
 
-            render(options);
+            render($scope.options);
 
             labels = groups.append('text')
                 .text(function (d) {
@@ -155,9 +147,9 @@ angular.module('makComponents')
                 })
                 .attr('text-anchor', 'middle')
                 .attr("transform", function(d) { 
-                  var translatePosition = drawArc.centroid({ innerRadius: innerRadius, outerRadius: outerRadius, startAngle: d.startAngle, endAngle: d.endAngle });
-                  translatePosition[0] += radius;
-                  translatePosition[1] += radius;
+                  var translatePosition = drawArc.centroid({ innerRadius: $scope.innerRadius, outerRadius: $scope.radius, startAngle: d.startAngle, endAngle: d.endAngle });
+                  translatePosition[0] += $scope.radius;
+                  translatePosition[1] += $scope.radius;
                   return "translate(" + translatePosition + ")";
                 })
                 .on('click', function (d) {
@@ -180,7 +172,7 @@ angular.module('makComponents')
                 .style('opacity', '0')
                 //.remove()
 
-            render(options);
+            render($scope.options);
 
             vis.transition().delay(800).remove();
           }

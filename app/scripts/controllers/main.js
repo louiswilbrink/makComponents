@@ -14,6 +14,10 @@ angular.module('makComponents')
         type: 'integer'
       },
       {
+        name: 'innerRadius',
+        type: 'integer'
+      },
+      {
         name: 'options',
         type: 'object'
       },
@@ -31,34 +35,20 @@ angular.module('makComponents')
     
     $scope.radialMenu = {};
     $scope.radialMenu.radius = 250;
+    $scope.radialMenu.innerRadius = 35;
 
     $scope.radialMenu.isClosed = false;
-
 
     $scope.radialMenu.entities = {
       ddg: {
         tasks: [
-          {
-            label: 'Sink'
-          },
-          {
-            label: 'Attach'
-          },
-          {
-            label: 'Marauding'
-          },
-          {
-            label: 'Destroy'
-          },
-          {
-            label: 'Protect'
-          },
-          {
-            label: 'Retreat'
-          },
-          {
-            label: 'Move'
-          }
+          { label: 'Sink' },
+          { label: 'Attach' },
+          { label: 'Marauding' },
+          { label: 'Destroy' },
+          { label: 'Protect' },
+          { label: 'Retreat' },
+          { label: 'Move' }
         ]
       }
     };
