@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('makComponents', [
-  'ngRoute'
+  'ngRoute', 'angular-gestures'
 ])
   .config(function ($routeProvider) {
     $routeProvider
