@@ -1,7 +1,13 @@
 'use strict';
 
 angular.module('makComponents')
-  .controller('MainCtrl', ['$scope', 'Util', function ($scope, Util) {
+  .controller('MainCtrl', ['$scope', '$location', 'Util', function ($scope, $location, Util) {
+
+    // Navigation.
+    
+    $scope.navigate = function (path) {
+      $location.path('/' + path);
+    };
 
     // Directive syntax.
 

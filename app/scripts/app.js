@@ -19,6 +19,10 @@ angular.module('makComponents', [
         templateUrl: 'views/radial-menu-page.html',
         controller: 'MainCtrl'
       })
+      .when('/progress-apps', {
+        templateUrl: 'views/progress-apps.html',
+        controller: 'MainCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
