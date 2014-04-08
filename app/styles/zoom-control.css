@@ -1,0 +1,57 @@
+.zoom-canvas {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(183, 214, 234, .5);
+  border: 1px solid #ee2e24;
+  border-radius: 10px;
+  position: absolute;
+  top: 0px; left: 0px;
+  z-index: 100;
+}
+
+.zoom-svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px; left: 0px;
+}
+
+/* Huge Desktop */
+@media screen and (min-width: 1200px) {
+
+} /* end of (min-width: 1200px) */
+
+/* Desktop */
+@media screen and (max-width: 1199px) {
+
+} /* end of (min-width: 1199px) */
+
+/* iPad 1/2/3/4/Mini | landscape */
+@media screen and (max-width: 1024px) {
+
+} /* end of (max-width: 1024px) */
+
+/* iPad 1/2/3/4/Mini | portrait */
+@media screen and (max-width: 768px) {
+
+} /* end of (max-width: 768px) */
+
+/* iPhone 5/5S | landscape */
+@media screen and (max-width: 568px) {
+
+} /* end of (max-width: 568px) */
+
+/* iPhone 4/4S | landscape */
+@media screen and (max-width: 480px) {
+
+} /* end of (max-width: 480px) */
+
+/* iPhone 4/4S/5/5S | portrait */
+@media screen and (max-width: 320px) {
+
+  .zoom-canvas {
+  }
+
+  .zoom-svg {
+  }
+} /* end of (min-width: 320px) */
