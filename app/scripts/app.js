@@ -23,6 +23,9 @@ angular.module('makComponents', [
         templateUrl: 'views/progress-apps.html',
         controller: 'MainCtrl'
       })
+      .when('/the-rack', {
+        templateUrl: 'views/the-rack.html',
+      })
       .otherwise({
         redirectTo: '/'
       });
