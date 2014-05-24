@@ -23,6 +23,10 @@ angular.module('makComponents', [
         templateUrl: 'views/progress-apps.html',
         controller: 'MainCtrl'
       })
+      .when('/d3-angular-learning', {
+        templateUrl: 'views/d3-angular-learning',
+        controller: 'D3AngularLearningCtrl'
+      })
       .when('/the-rack', {
         templateUrl: 'views/the-rack.html',
       })

@@ -1,0 +1,7 @@
+<h1>This is the d3-angular-learning view.</h1>
+
+<h3>{{ graph.height }}</h3>
+
+<svg ng-attr-height="{{ graph.height }}" ng-attr-width="{{ graph.width }}">
+  <path class="line" ng-attr-d="{{ line(points) }}"></path>
+</svg>
