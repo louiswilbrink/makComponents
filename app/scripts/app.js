@@ -27,6 +27,12 @@ angular.module('makComponents', [
         templateUrl: 'views/d3-angular-learning',
         controller: 'D3AngularLearningCtrl'
       })
+      .when('/pure-d3', {
+        templateUrl: 'views/pure-d3.html',
+      })
+      .when('/d3/circles', {
+        templateUrl: 'views/svg-circles.html',
+      })
       .when('/the-rack', {
         templateUrl: 'views/the-rack.html',
       })

@@ -1,0 +1,20 @@
+<script>
+
+  var dataset = [1, 2, 3, 4, 5];
+
+  var paragraphs = d3.select('body')
+    .selectAll('p')
+    .data(dataset)
+    .enter()
+    .append('p')
+    .text('New Paragraph!');
+
+  console.log(paragraphs);
+
+</script>
+
+<h1>Page Title</h1>
+
+<svg height="50" width="50">
+  <circle cx="25" cy="25" r="22" fill="blue" stroke="gray" stroke-width="2"></circle>
+</svg>
