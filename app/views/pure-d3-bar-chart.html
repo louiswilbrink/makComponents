@@ -1,0 +1,28 @@
+<script>
+
+  var dataset = [50, 20, 80, 130, 150, 40];
+
+  d3.select('.sandbox')
+    .append('svg')
+    .attr('height', 400)
+    .attr('width', 400)
+
+  d3.select('svg')
+    .selectAll('rect')
+    .data(dataset)
+    .enter()
+    .append('rect')
+      .attr('width', 20)
+      .attr('height', function (d) { return d; })
+      .attr('x', function (d, key) { 
+        return key * 30;
+      })
+      .attr('y', function (d) {
+        return 400 - d;
+      })
+
+</script>
+
+
+<div class="sandbox">
+</div>

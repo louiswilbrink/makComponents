@@ -1,20 +1,26 @@
 <script>
 
-  var dataset = [1, 2, 3, 4, 5];
+  var dataset = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  var paragraphs = d3.select('body')
+  var paragraphs = d3.select('.d3-sandbox')
     .selectAll('p')
     .data(dataset)
     .enter()
     .append('p')
-    .text('New Paragraph!');
+    .text(function (d) { return 'the next number is ' + d; })
+    .style('color', function (d) {
+      if (d < 6) {
+        return 'red';
+      }
+      else {
+        return 'blue';
+      }
+    })
 
   console.log(paragraphs);
 
 </script>
 
-<h1>Page Title</h1>
-
-<svg height="50" width="50">
-  <circle cx="25" cy="25" r="22" fill="blue" stroke="gray" stroke-width="2"></circle>
-</svg>
+<div class="d3-sandbox centered">
+  <h1>Basic d3 selection and data binding</h1>
+</div>
