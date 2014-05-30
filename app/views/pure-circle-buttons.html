@@ -1,0 +1,22 @@
+<script>
+  
+  var dataset = [50, 20, 80, 130, 150, 40];
+
+  d3.select('#sim-control-buttons')
+    .selectAll('circle')
+    .data(dataset)
+    .enter()
+    .append('circle')
+      .attr('cx', 100)
+      .attr('cy', 100)
+      .attr('r', 10)
+
+</script>
+
+
+<div class="pure-circle-button-container centered">
+  <h1>Simulation Control</h1>
+  <svg id="sim-control-buttons" height="400" width="400">
+    <circle cx="200" cy="200" r="30"></circle>
+  </svg>
+</div>
