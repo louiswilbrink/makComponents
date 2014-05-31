@@ -43,6 +43,13 @@ angular.module('makComponents', [
       .when('/d3/circles', {
         templateUrl: 'views/svg-circles.html',
       })
+      .when('/d3/svg-primer', {
+        templateUrl: 'views/svg-primer.html',
+      })
+      .when('/d3/circle-revolution', {
+        templateUrl: 'views/circle-revolution.html',
+        controller: 'CircleRevolutionCtrl'
+      })
       .when('/the-rack', {
         templateUrl: 'views/the-rack.html',
       })

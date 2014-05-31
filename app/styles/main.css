@@ -135,4 +135,14 @@ path:hover {
     fill: rgba(0, 0, 68, 0.85);
 }
 
+.centered {
+  text-align: center;
+}
 
+.std-svg {
+  background-color: lightblue;
+}
+
+.revolving-circle {
+  fill: purple;
+}
