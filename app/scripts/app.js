@@ -36,6 +36,10 @@ angular.module('makComponents', [
       .when('/pure-circle-buttons', {
         templateUrl: 'views/pure-circle-buttons.html',
       })
+      .when('/d3/ng-d3-circles', {
+        templateUrl: 'views/ng-d3-circles.html',
+        controller: 'NgD3CirclesCtrl'
+      })
       .when('/d3/circles', {
         templateUrl: 'views/svg-circles.html',
       })
