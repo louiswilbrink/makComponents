@@ -140,7 +140,9 @@ path:hover {
 }
 
 .std-svg {
-  background-color: lightblue;
+  background-image: url("http://162.243.103.157/assets/backgrounds/whitey.png");
+  height: 500px;
+  width: 500px;
 }
 
 .revolving-circle {

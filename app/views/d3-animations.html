@@ -1,0 +1,35 @@
+<script>
+
+  console.log(randomColor());
+
+  d3.select('.d3-animations')
+    .append('rect')
+      .attr('x', 0)
+      .attr('y', 0)
+      .attr('width', 50)
+      .attr('height', 50)
+      .attr('fill', randomColor())
+      .attr('opacity', 1)
+    .transition()
+      .attr('x', 450)
+      .attr('fill', randomColor())
+      .duration(700)
+    .transition()
+      .attr('y', 450)
+      .attr('fill', randomColor())
+      .duration(700)
+      .delay(700)
+    .transition()
+      .attr('x', 0)
+      .attr('fill', randomColor())
+      .duration(700)
+      .delay(1400)
+    .transition()
+      .attr('y', 0)
+      .attr('fill', randomColor())
+      .duration(700)
+      .delay(2100)
+
+</script>
+<svg class="std-svg d3-animations">
+</svg>
