@@ -49,6 +49,9 @@ angular.module('makComponents', [
       .when('/d3/d3-animations', {
         templateUrl: 'views/d3-animations.html',
       })
+      .when('/d3/bar-chart-scaled', {
+        templateUrl: 'views/bar-chart-scaled.html',
+      })
       .when('/d3/circle-revolution', {
         templateUrl: 'views/circle-revolution.html',
         controller: 'CircleRevolutionCtrl'
