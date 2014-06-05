@@ -1,0 +1,44 @@
+<script>
+
+  var max = 10;
+  var min = 2;
+  var data = [3, 2, 6, 2, 7, 10, 4];
+  var circles;
+
+  var svg = d3.select('#shrinking-circles')
+
+  var drawCircles = function () {
+
+    circles = svg.selectAll('circle').data(data);
+
+    circles.exit()
+      .transition()
+        .attr('r', 0)
+      .remove()
+
+    circles.enter()
+      .append('circle')
+        .attr('cx', function (d, i) {
+          return (i * 60) + 10;
+        })
+        .attr('cy', 250)
+        .attr('r', 0)
+        .style('fill', function (d) {
+          return randomColor();
+        })
+      .transition()
+        .attr('r', function (d) {
+          return d * 2;
+        })
+  };
+
+  drawCircles();
+
+  window.setTimeout(function () {
+    data.splice(0, 2);
+    drawCircles();
+  }, 3000);
+
+</script>
+<svg id="shrinking-circles" class="std-svg">
+</svg>
