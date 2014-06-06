@@ -35,7 +35,10 @@
   drawCircles();
 
   window.setTimeout(function () {
-    data.splice(0, 2);
+
+    angular.forEach(data, function (value, key) {
+      data.key = 5;
+    });
     drawCircles();
   }, 3000);
 
