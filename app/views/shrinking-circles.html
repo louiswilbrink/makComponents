@@ -28,35 +28,44 @@
         })
         .attr('cy', 250)
         .attr('r', 0)
-        .style('fill', function (d) {
-          return randomColor();
-        })
-      .transition()
+        .classed({ 'drop-glow': true })
+
+    circles.transition()
+      .duration(1000)
         .attr('r', function (d) {
           return d * 2;
+        })
+        .attr('fill', function (d) {
+          return randomColor();
         })
 
     circles.exit()
       .transition()
         .attr('r', 0)
       .remove()
+
+    window.setTimeout(function () {
+
+      shuffle(data);
+
+      drawCircles();
+    }, 1000);
   };
 
   drawCircles();
 
-  window.setTimeout(function () {
-
-    //shuffle(data);
-
-    data.push(6);
-    data.push(9);
-    data.push(4);
-
-    console.log(data);
-
-    drawCircles();
-  }, 3000);
-
 </script>
-<svg id="shrinking-circles" class="std-svg">
+
+<svg id="shrinking-circles" style="background-color: black" class="">
+    <defs>
+        <filter id="dropGlow" width="1.5" height="1.5" x="-.25" y="-.25">
+            <feGaussianBlur id="feGaussianBlur5384" in="SourceAlpha" stdDeviation="15.000000" result="blur"/>
+            <feColorMatrix id="feColorMatrix5386" result="bluralpha" type="matrix" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 0.800000 0 "/>
+            <feOffset id="feOffset5388" in="bluralpha" dx="0.000000" dy="0.000000" result="offsetBlur"/>
+            <feMerge id="feMerge5390">
+                <feMergeNode id="feMergeNode5392" in="offsetBlur"/>
+                <feMergeNode id="feMergeNode5394" in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
 </svg>
