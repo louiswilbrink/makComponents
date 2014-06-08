@@ -124,17 +124,6 @@ g text {
     text-shadow: 1px 1px #000;
 }
 
-path {
-    cursor: pointer;
-    fill: rgba(0, 0, 68, 0.7);
-    stroke: rgba(255, 255, 255, 1);
-    stroke-width:3;
-}
-
-path:hover {
-    fill: rgba(0, 0, 68, 0.85);
-}
-
 .centered {
   text-align: center;
 }

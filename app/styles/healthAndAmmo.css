@@ -1,0 +1,29 @@
+.entity-health-ammo {
+  width: 768px;
+  height: 230px;
+  background-image: url("http://162.243.103.157/assets/backgrounds/gun_metal.png");
+}
+
+.entity-name {
+  text-align: center;
+  color: white;
+}
+
+.health-container {
+  float: left;
+  width: 30%;
+  height: 100%;
+}
+
+.entity-info {
+  float: left;
+  width: 40%;
+  height: 100%;
+}
+
+.ammo-container {
+  float: left;
+  width: 30%;
+  height: 100%;
+}
+

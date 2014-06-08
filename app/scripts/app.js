@@ -1,13 +1,17 @@
 'use strict';
 
 angular.module('makComponents', [
-  'ngRoute', 'angular-gestures'
+  'ngRoute', 'angular-gestures', 'nvd3ChartDirectives'
 ])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
+      })
+      .when('/health-and-ammo', {
+        templateUrl: 'views/health-and-ammo.html',
+        controller: 'HealthAndAmmoCtrl'
       })
       .when('/axes', {
         templateUrl: 'views/axes-page.html'

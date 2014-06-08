@@ -1,0 +1,21 @@
+<div class="entity-health-ammo" ng-repeat="entity in healthAndAmmo.entities">
+  <div class="health-container">
+    <nvd3-pie-chart
+      data="exampleData"
+        id="exampleId"
+        width="300"
+        height="250"
+        x="xFunction()"
+        y="yFunction()"
+        showLabels="false">
+        <svg height="230"></svg>
+    </nvd3-pie-chart>
+  </div>
+  <div class="entity-info">
+    <h1 class="entity-name">{{ entity.name }}</h1>
+  </div>
+  <div class="ammo-container">
+    <svg height="230" width="230">
+    </svg>
+  </div>
+</div>
