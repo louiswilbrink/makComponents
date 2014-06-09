@@ -1,7 +1,9 @@
 .entity-health-ammo {
   width: 768px;
   height: 230px;
+  /*
   background-image: url("http://162.243.103.157/assets/backgrounds/gun_metal.png");
+  */
 }
 
 .entity-name {
